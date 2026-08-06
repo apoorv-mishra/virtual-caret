@@ -2,6 +2,10 @@ body {
   margin: 0;
 }
 
+#canvas {
+  display: none;
+}
+
 .textarea-container {
   position: relative;
   width: 100%;
@@ -11,7 +15,20 @@ body {
   justify-content: center;
 
   & > textarea {
+    caret-color: transparent !important;
     width: 70%;
     height: 70%;
   }
+}
+
+#virtual-caret {
+  /* caret position */
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  /* caret dimensions */
+  height: 1em;
+  width: 1.5px;
+  background-color: red;
 }
