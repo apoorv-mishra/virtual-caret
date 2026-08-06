@@ -2,10 +2,6 @@ body {
   margin: 0;
 }
 
-#canvas {
-  display: none;
-}
-
 .textarea-container {
   position: relative;
   width: 100%;
