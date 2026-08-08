@@ -45,7 +45,7 @@
       { left: `${vCaretRect.left}px` }, { left: `${vCaretStartX + x}px` }
     ]
     const animation = {
-      duration: 100,
+      duration: 80,
       easing:   "linear",
     }
     vCaretEl.animate(keyframes, animation);
@@ -67,14 +67,24 @@
     const propValue = window.getComputedStyle(vCaretContainerEl).getPropertyValue(propName);
     return isNaN(parseFloat(propValue))
     // TODO: don't hardcode
-      ? 16
+      ? 13.3333 * 1.2
       // TODO: what about relative units?
-        : parseFloat(propValue);
+      : parseFloat(propValue);
   }
 
+  /* refer https://developer.mozilla.org/en-US/docs/Glossary/Advance_measure */
   function charWidth(): number {
-    // TODO: don't hardcode, refer https://developer.mozilla.org/en-US/docs/Glossary/Advance_measure
-    return 8;
+    const canvas = document.createElement("canvas");
+    const ctx    = canvas.getContext("2d");
+    if (ctx === null) {
+      throw Error("ctx should not be null");
+    }
+    // TODO: don't hardcode,
+    ctx.font         = "13.3333px monospace";
+    // TODO: don't hardcode, for now, it's monospace so advance width remains same for all glyphs
+    const txtMetrics = ctx.measureText(" ");
+    // TODO: why is it not working without `Math.floor`, it should, right, right?
+    return Math.floor(txtMetrics.width);
   }
 
   function charsPerLine(lineWidth: number, charWidth: number): number {
@@ -93,7 +103,9 @@
   }
 
   function vCaretContainerContentWidth(vCaretContainerEl: HTMLTextAreaElement): number {
-    return  vCaretContainerEl.scrollWidth;
+    return  vCaretContainerEl.scrollWidth
+            // TODO: don't hardcode padding
+            - 2;
   }
 
   function vCaretContainerBorderLeftWidth(vCaretContainerEl: HTMLTextAreaElement): string {
